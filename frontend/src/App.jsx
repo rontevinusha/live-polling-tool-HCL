@@ -208,16 +208,29 @@ function App() {
             <div className="poll-card" key={poll.id}>
               <h2>{poll.question}</h2>
 
-              {poll.options.map((option) => (
-                <button
-                  className="option-button"
-                  key={option.id}
-                  onClick={() => vote(poll.id, option.id)}
-                >
-                  <span>{option.text}</span>
-                  <strong>{option.votes} votes</strong>
-                </button>
-              ))}
+              {poll.options.map((option) => {
+  const totalVotes = poll.options.reduce(
+    (total, item) => total + item.votes,
+    0
+  );
+
+  const percentage =
+    totalVotes === 0 ? 0 : Math.round((option.votes / totalVotes) * 100);
+
+  return (
+    <button
+      className="option-button"
+      key={option.id}
+      onClick={() => vote(poll.id, option.id)}
+    >
+      <span>{option.text}</span>
+
+      <strong>
+        {option.votes} votes ({percentage}%)
+      </strong>
+    </button>
+  );
+})}
             </div>
           ))
         )}
