@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 	gorillaWebsocket "github.com/gorilla/websocket"
 	"github.com/gin-gonic/gin"
 	"live-pooling-backend/middleware"
@@ -72,7 +73,12 @@ r.POST("/login", controllers.Login)
 		})
 	})
 
-	err = r.Run(":8080")
+	port := os.Getenv("PORT")
+if port == "" {
+    port = "8080"
+}
+
+err = r.Run(":" + port)
 	if err != nil {
 		panic(err)
 	}
